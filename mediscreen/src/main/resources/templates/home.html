@@ -35,7 +35,8 @@
                             <td th:text="${patient.firstName}"></td>
                             <td th:text="${patient.lastName}"></td>
                             <td th:text="${!#strings.isEmpty(patient.dateOfBirth)} ? ${patient.dateOfBirth}"></td>
-                            <td th:if="${!#strings.isEmpty(patient.getGender)}" th:text="${#strings.equals(patient.getGender, 'F')} ? 'Female' : 'Male'"></td>
+                            <td th:if="${!#strings.isEmpty(patient.gender)}" th:text="${#strings.equals(patient.gender, 'F')} ? 'Female' : 'Male'"></td>
+                            <td th:unless="${!#strings.isEmpty(patient.gender)}" th:text="' '"></td>
                             <td th:text="${!#strings.isEmpty(patient.homeAddress)} ? ${patient.homeAddress}"></td>
                             <td th:text="${!#strings.isEmpty(patient.phone)} ? ${patient.phone}"></td>
                             <td class="text-center">
