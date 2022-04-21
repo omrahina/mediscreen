@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments :: head" />
+
+<body>
+    <div class="container">
+        <h1 th:text="#{app.name}">Mediscreen</h1>
+        <div th:if="${error != null}" class="card bg-light my-3">
+            <div class="card-body">
+                <div th:utext="${error}" class="card-text"></div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end mb-3">
+            <a href="/patient/add" class="btn btn-primary btn-sm" th:text="#{patient.new}">Add a new patient</a>
+        </div>
+        <div class="row">
+            <table class="table table-striped text-center">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th th:text="#{firstName}"></th>
+                    <th th:text="#{lastName}"></th>
+                    <th th:text="#{birth}"></th>
+                    <th th:text="#{gender}"></th>
+                    <th th:text="#{address}"></th>
+                    <th th:text="#{phone}"></th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <th:block th:if="${!#lists.isEmpty(patients)}">
+                    <tbody>
+                        <tr th:each="patient : ${patients}">
+                            <td th:text="${patient.id}"></td>
+                            <td th:text="${patient.firstName}"></td>
+                            <td th:text="${patient.lastName}"></td>
+                            <td th:text="${!#strings.isEmpty(patient.dateOfBirth)} ? ${patient.dateOfBirth}"></td>
+                            <td th:text="${!#strings.isEmpty(patient.getGender)} ? ${patient.getGender}"></td>
+                            <td th:text="${!#strings.isEmpty(patient.homeAddress)} ? ${patient.homeAddress}"></td>
+                            <td th:text="${!#strings.isEmpty(patient.phone)} ? ${patient.phone}"></td>
+                            <td class="text-center">
+                                <a th:href="@{|/patient/update/${patient.id}|}">Edit</a>
+                                <span>|</span>
+                                <a th:href="@{|/patient/delete/${patient.id}|}">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </th:block>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

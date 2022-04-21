@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="fragments :: head"/>
+
+<body>
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-5">
+                <h1 class="mb-3" th:text="#{patient.new}">Add a new Patient</h1>
+                <form th:action="@{/patient/add}" th:object="${patient}" method="post" class="px-3 py-3 border-cyan">
+
+                    <th:block th:replace="fragments :: patientInfos"/>
+
+                    <div class="d-flex justify-content-center">
+                        <a th:href="@{/patients}" class="btn btn-secondary mr-10" th:text="#{cancel}">Cancel</a>
+                        <button class="btn btn-primary" type="submit">
+                            <span th:text="#{save}">save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+*{
+    font-family: 'Raleway', sans-serif;
+}
+
+body{
+    padding-top: 70px;
+    padding-bottom: 1.5rem;
+}
+
+h1 {
+    color: #008B8B;
+}
+
+a{
+    text-decoration: none;
+}
+
+.btn-primary{
+    background-color: #008B8B;
+    border-color: #008B8B;
+}
+
+.btn-primary:hover {
+    background-color: #008080 !important;
+    border-color: #008080;
+}
+
+.btn-secondary{
+    background-color: white !important;
+    border-color: #008B8B !important;
+    color: #008B8B;
+}
+
+.btn-secondary:focus, .btn-secondary:hover, .btn-secondary:active, a, a:hover{
+    color: #008080;
+}
+
+.border-cyan{
+    border: #008B8B solid 2px;
+}
+
+.mr-10{
+    margin-right: 10px;
+}
