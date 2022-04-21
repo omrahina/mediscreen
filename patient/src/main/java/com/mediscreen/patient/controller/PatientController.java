@@ -4,17 +4,15 @@ import com.mediscreen.patient.exceptions.PatientException;
 import com.mediscreen.patient.model.Patient;
 import com.mediscreen.patient.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
+import java.util.List;
 
-@Controller
+@RestController
 @Slf4j
 public class PatientController {
 
@@ -24,56 +22,57 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    @GetMapping("/patients")
-    public String home(Model model, @RequestParam(name = "error", required = false) String error) {
-        model.addAttribute("patients", patientService.patientList());
-        model.addAttribute("patient", new Patient());
-        if (error != null){
-            model.addAttribute("error", error);
-        }
-        return "home";
-    }
-
-    @GetMapping("/patient/add")
-    public String showAddPatientPage(Model model) {
-        model.addAttribute("patient", new Patient());
-        return "addPatient";
-    }
-
     @PostMapping("/patient/add")
-    public String addPatient(@Valid Patient patient, BindingResult result, Model model) {
-        log.info("Request validate a new patient");
-        if (result.hasErrors()) {
-            log.error("Error(s) in the form");
-            return "addPatient";
-        }
+    public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
+        log.info("Request add a new patient");
         try {
-            patientService.addPatient(patient);
+            Patient savedPatient = patientService.addPatient(patient);
+            return new ResponseEntity<>(savedPatient, HttpStatus.CREATED);
         } catch (PatientException e) {
-            return "redirect:/patients?error=" + e.getMessage();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
-        return "redirect:/patients";
     }
 
-    @GetMapping("patient/update/{id}")
-    public String showUpdatePatientPage(@PathVariable("id") long id, Model model) {
+    @PutMapping("patient/update/{id}")
+    public ResponseEntity<Patient> updatePatient(@PathVariable("id") long id, @RequestBody Patient patient) {
+        log.info("Request update a patient");
+        patient.setId(id);
+        try {
+            return new ResponseEntity<>(patientService.updatePatient(patient), HttpStatus.OK);
+        } catch (PatientException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
+
+    @GetMapping("/patient/{id}")
+    public ResponseEntity<Patient> getPatient(@PathVariable("id") long id) {
+        log.info("Request patient " + id);
         try {
             Patient patient = patientService.findPatientById(id);
-            model.addAttribute("patient", patient);
-            return "updatePatient";
+            return new ResponseEntity<>(patient, HttpStatus.FOUND);
         } catch (PatientException e) {
-            return "redirect:/patients?error=" + e.getMessage();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
-    @PostMapping("patient/update/{id}")
-    public String updatePatient(@PathVariable("id") long id, @Valid Patient patient, BindingResult result, Model model) {
-        log.info("Request update a patient");
-        if (result.hasErrors()) {
-            log.error("Error(s) in the form");
-            return "updatePatient";
+    @DeleteMapping("/patient/delete/{id}")
+    public ResponseEntity<String> deletePatient(@PathVariable("id") long id) {
+        log.info("Request delete patient " + id);
+        try {
+            patientService.deletePatient(id);
+            return new ResponseEntity<>("The patient was successfully deleted", HttpStatus.OK);
+        } catch (PatientException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
-        //Continue
-        return "redirect:/patients";
+    }
+
+    @GetMapping("/patients")
+    public ResponseEntity<List<Patient>> patientList() {
+        log.info("Request patient list");
+        List<Patient> patients = patientService.patientList();
+        if (!CollectionUtils.isEmpty(patients)) {
+            return new ResponseEntity<>(patients, HttpStatus.OK);
+        }
+        throw new ResponseStatusException(HttpStatus.NO_CONTENT, "Patient list empty.");
     }
 }

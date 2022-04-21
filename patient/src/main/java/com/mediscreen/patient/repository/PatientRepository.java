@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     Patient findPatientById(long id);
+
+    Patient findPatientByFirstNameAndAndLastName(String firstName, String lastName);
 }

@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 public class PatientService {
 
-    private PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
 
     public PatientService(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
@@ -29,6 +29,17 @@ public class PatientService {
 
         log.error("Unable to save new patient");
         throw new PatientException("First name and/or last name not accepted");
+    }
+
+    public Patient updatePatient(Patient patient) throws PatientException {
+        if (patientRepository.existsById(patient.getId())) {
+            Patient updatedPatient = patientRepository.save(patient);
+            log.info("patient id {} updated", patient.getId());
+            return updatedPatient;
+        }
+
+        log.error("The requested resource doesn't exist.");
+        throw new PatientException("The requested resource doesn't exist.");
     }
 
     public List<Patient> patientList() {
@@ -49,5 +60,20 @@ public class PatientService {
         }
         log.error("No patient found");
         throw new PatientException("No patient found");
+    }
+
+    public void deletePatient(long id) throws PatientException {
+        if (patientRepository.existsById(id)) {
+            patientRepository.deleteById(id);
+            log.info("patient entity deleted");
+        } else {
+            log.error("The requested resource doesn't exist.");
+            throw new PatientException("Couldn't perform the operation. The requested resource doesn't exist.");
+        }
+    }
+
+    private boolean patientExists(Patient patient) {
+        Patient existingPatient = patientRepository.findPatientByFirstNameAndAndLastName(patient.getFirstName(), patient.getLastName());
+        return existingPatient != null && existingPatient.equals(patient);
     }
 }
