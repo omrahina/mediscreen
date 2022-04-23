@@ -2,9 +2,7 @@ package com.mediscreen.mediscreen.proxies;
 
 import com.mediscreen.mediscreen.beans.PatientBean;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,5 +14,11 @@ public interface PatientMicroserviceProxy {
 
     @PostMapping("/patient/add")
     PatientBean addPatient(@RequestBody PatientBean patient);
+
+    @PutMapping("patient/update/{id}")
+    PatientBean updatePatient(@PathVariable("id") long id, @RequestBody PatientBean patient);
+
+    @GetMapping("/patient/{id}")
+    PatientBean getPatient(@PathVariable("id") long id);
 
 }

@@ -3,6 +3,7 @@ package com.mediscreen.mediscreen.beans;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class PatientBean {
     @Length(max = 100,  message = "must not exceed 100 characters")
     private String lastName;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     private EnumGenderBean gender;

@@ -49,7 +49,7 @@ public class PatientController {
         log.info("Request patient " + id);
         try {
             Patient patient = patientService.findPatientById(id);
-            return new ResponseEntity<>(patient, HttpStatus.FOUND);
+            return new ResponseEntity<>(patient, HttpStatus.OK);
         } catch (PatientException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

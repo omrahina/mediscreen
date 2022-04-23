@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -52,6 +49,31 @@ public class MediscreenController {
         }
         try {
             patientProxy.addPatient(patient);
+        } catch (FeignException e) {
+            return "redirect:/patients?error=" + e.getMessage();
+        }
+
+        return "redirect:/patients";
+    }
+
+    @GetMapping("/patient/update/{id}")
+    public String showUpdatePatientPage(@PathVariable("id") long id, Model model) {
+        try {
+            model.addAttribute("patient", patientProxy.getPatient(id));
+            return "updatePatient";
+        } catch (FeignException e) {
+            return "redirect:/patients?error=" + e.getMessage();
+        }
+    }
+
+    @PostMapping("patient/update/{id}")
+    public String updatePatient(@PathVariable("id") long id, @Valid @ModelAttribute("patient") PatientBean patient, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            log.error("Error(s) in the form");
+            return "updatePatient";
+        }
+        try {
+            patientProxy.updatePatient(id, patient);
         } catch (FeignException e) {
             return "redirect:/patients?error=" + e.getMessage();
         }
