@@ -48,7 +48,7 @@ public class NoteController {
         try {
             return new ResponseEntity<>(noteService.getPatientHistory(id), HttpStatus.OK);
         } catch (NoteException e) {
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage(), e);
+            return new ResponseEntity<>(List.of(), HttpStatus.NO_CONTENT);
         }
     }
 

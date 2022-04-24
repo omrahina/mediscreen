@@ -15,15 +15,9 @@
         <a href="/patients" class="btn btn-secondary btn-sm">Patients information</a>
         <a th:href="@{|/history/add/${patientId}|}" class="btn btn-primary btn-sm" th:text="#{note.new}">Add a note</a>
     </div>
-    <div class="row mb-3">
-        <div class="col-2">
-            <small class="text-bold">Patient Id</small>
-            <p th:text="${patientId}"></p>
-        </div>
-        <div class="col">
-            <small class="text-bold" th:text="#{fullName}"></small>
-            <p th:text="${fullName}"></p>
-        </div>
+    <div class="mb-3">
+        <small class="text-bold">Status</small>
+        <p th:text="${risk}"></p>
     </div>
     <div class="row">
         <table class="table table-striped text-center">

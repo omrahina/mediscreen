@@ -2,6 +2,7 @@ package com.mediscreen.mediscreen.controller;
 
 import com.mediscreen.mediscreen.beans.NoteBean;
 import com.mediscreen.mediscreen.beans.PatientBean;
+import com.mediscreen.mediscreen.proxies.AssessmentMicroserviceProxy;
 import com.mediscreen.mediscreen.proxies.PatientHistoryMicroserviceProxy;
 import com.mediscreen.mediscreen.proxies.PatientMicroserviceProxy;
 import feign.FeignException;
@@ -21,9 +22,12 @@ public class MediscreenPatientHistoryController {
 
     private final PatientMicroserviceProxy patientProxy;
 
-    public MediscreenPatientHistoryController(PatientHistoryMicroserviceProxy historyProxy, PatientMicroserviceProxy patientProxy) {
+    private final AssessmentMicroserviceProxy assessmentProxy;
+
+    public MediscreenPatientHistoryController(PatientHistoryMicroserviceProxy historyProxy, PatientMicroserviceProxy patientProxy, AssessmentMicroserviceProxy assessmentProxy) {
         this.historyProxy = historyProxy;
         this.patientProxy = patientProxy;
+        this.assessmentProxy = assessmentProxy;
     }
 
     @GetMapping("/history/{patientId}")
@@ -31,8 +35,12 @@ public class MediscreenPatientHistoryController {
         try {
             PatientBean patient = patientProxy.getPatient(id);
             model.addAttribute("patientId", patient.getId());
-            model.addAttribute("fullName", patient.getFirstName() + " " + patient.getLastName());
             model.addAttribute("notes", historyProxy.viewPatientHistory(id));
+            if (patient.getDateOfBirth() != null) {
+                model.addAttribute("risk", assessmentProxy.assessPatient(id));
+            } else {
+                model.addAttribute("risk", patient.getFirstName() + " " + patient.getLastName()+ " diabetes assessment is not available (age missing)");
+            }
         } catch (FeignException e) {
             error = e.getMessage();
         }
