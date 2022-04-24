@@ -21,7 +21,7 @@ public class NoteController {
         this.noteService = noteService;
     }
 
-    @PostMapping("history/add")
+    @PostMapping("/history/add")
     public ResponseEntity<Note> addNote(@RequestBody Note note) {
         log.info("Request add a new note");
         Note savedNote = noteService.addNote(note);
@@ -31,7 +31,7 @@ public class NoteController {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Couldn't add the note to patient history");
     }
 
-    @PutMapping("history/update/{id}")
+    @PutMapping("/history/update/{id}")
     public ResponseEntity<Note> updateNote(@PathVariable("id") String id, @RequestBody Note note) {
         log.info("Request update a note");
         note.setId(id);
@@ -42,13 +42,23 @@ public class NoteController {
         }
     }
 
-    @GetMapping("history/view/{id}")
+    @GetMapping("/history/view/{id}")
     public ResponseEntity<List<Note>> viewPatientHistory(@PathVariable("id") Long id) {
         log.info("Request patient history");
         try {
             return new ResponseEntity<>(noteService.getPatientHistory(id), HttpStatus.OK);
         } catch (NoteException e) {
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, e.getMessage(), e);
+        }
+    }
+
+    @GetMapping("/history/view")
+    public ResponseEntity<Note> getNote(@RequestParam("id") String id) {
+        log.info("Request patient note");
+        try {
+            return new ResponseEntity<>(noteService.findNoteById(id), HttpStatus.OK);
+        } catch (NoteException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
 }

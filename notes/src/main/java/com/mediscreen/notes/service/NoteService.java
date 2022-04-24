@@ -41,4 +41,12 @@ public class NoteService {
         log.debug("History empty");
         throw new NoteException("Patient history empty");
     }
+
+    public Note findNoteById(String id) throws NoteException {
+        if (noteRepository.existsById(id)) {
+            return noteRepository.findNoteById(id);
+        }
+        log.error("Note not found");
+        throw new NoteException("No such note in patient's history");
+    }
 }

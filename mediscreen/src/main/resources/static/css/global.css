@@ -42,3 +42,7 @@ a{
 .mr-10{
     margin-right: 10px;
 }
+
+.text-bold {
+    font-weight: bold;
+}

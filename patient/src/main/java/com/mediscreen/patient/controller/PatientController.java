@@ -33,7 +33,7 @@ public class PatientController {
         }
     }
 
-    @PutMapping("patient/update/{id}")
+    @PutMapping("/patient/update/{id}")
     public ResponseEntity<Patient> updatePatient(@PathVariable("id") long id, @RequestBody Patient patient) {
         log.info("Request update a patient");
         patient.setId(id);

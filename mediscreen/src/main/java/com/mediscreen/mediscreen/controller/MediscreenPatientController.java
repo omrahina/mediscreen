@@ -13,11 +13,11 @@ import javax.validation.Valid;
 
 @Controller
 @Slf4j
-public class MediscreenController {
+public class MediscreenPatientController {
 
     private final PatientMicroserviceProxy patientProxy;
 
-    public MediscreenController(PatientMicroserviceProxy patientProxy) {
+    public MediscreenPatientController(PatientMicroserviceProxy patientProxy) {
         this.patientProxy = patientProxy;
     }
 
