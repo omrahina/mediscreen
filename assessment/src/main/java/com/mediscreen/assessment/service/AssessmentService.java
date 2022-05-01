@@ -1,6 +1,5 @@
 package com.mediscreen.assessment.service;
 
-import com.mediscreen.assessment.beans.EnumGenderBean;
 import com.mediscreen.assessment.beans.NoteBean;
 import com.mediscreen.assessment.beans.PatientBean;
 import com.mediscreen.assessment.data.DiabetesTriggers;
@@ -17,6 +16,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.mediscreen.assessment.beans.EnumGenderBean.F;
+import static com.mediscreen.assessment.beans.EnumGenderBean.M;
+
 @Service
 @Slf4j
 public class AssessmentService {
@@ -32,6 +34,11 @@ public class AssessmentService {
                 .size();
         int patientAge = calculateAge(patient.getDateOfBirth());
 
+        if (patientAge > 2 && patient.getGender() == null) {
+            assessment.setDiabetesAssessment("diabetes assessment is not available (gender missing)");
+            return assessment;
+        }
+
         switch (nbTriggers) {
             case 0:
             case 1:
@@ -44,19 +51,19 @@ public class AssessmentService {
                 break;
 
             case 3:
-                if ((patientAge < 30) && (patient.getGender() == EnumGenderBean.M)) {
+                if ((patientAge < 30) && (patient.getGender() == M)) {
                     assessment.setDiabetesAssessment("In Danger");
                 }
                 break;
 
             case 4:
-                if ((patientAge < 30) && (patient.getGender() == EnumGenderBean.F)) {
+                if ((patientAge < 30) && (patient.getGender() == F)) {
                     assessment.setDiabetesAssessment("In Danger");
                 }
                 break;
 
             case 5:
-                if ((patientAge < 30) && (patient.getGender() == EnumGenderBean.M)) {
+                if ((patientAge < 30) && (patient.getGender() == M)) {
                     assessment.setDiabetesAssessment("Early onset");
                 }
                 break;
@@ -68,7 +75,7 @@ public class AssessmentService {
                 break;
 
             case 7:
-                if ((patientAge < 30) && (patient.getGender() == EnumGenderBean.F)) {
+                if ((patientAge < 30) && (patient.getGender() == F)) {
                     assessment.setDiabetesAssessment("Early onset");
                 }
                 break;
