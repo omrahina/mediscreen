@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "risk-assessment-microservice", url = "localhost:8083")
+@FeignClient(name = "risk-assessment-microservice", url = "assessment:8083")
 public interface AssessmentMicroserviceProxy {
 
     @GetMapping("/assess/{id}")

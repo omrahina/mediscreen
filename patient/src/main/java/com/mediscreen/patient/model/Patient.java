@@ -27,6 +27,7 @@ public class Patient {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "sex")
     private EnumGender gender;
 
@@ -35,4 +36,9 @@ public class Patient {
 
     @Column(name = "phone")
     private String phone;
+
+    public Patient(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

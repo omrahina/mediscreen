@@ -1,0 +1,70 @@
+version: "3"
+services:
+  mysqldb:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootroot
+      - MYSQL_DATABASE=prod
+    networks:
+      - mediscreen-network
+    ports:
+      - 3306:3306
+    volumes:
+      - ./patient/mysqldb/scripts/create_db.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./patient/mysqldb/scripts/patient_data.sql:/docker-entrypoint-initdb.d/2.sql
+      - ./patient/mysqldb/data:/var/lib/mysql
+  mongodb:
+    image: mongo:4.4.2
+    hostname: mongodb
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootroot
+      - MONGO_DB_USERNAME=user1
+      - MONGO_DB_PASSWORD=userPass
+      - MONGO_INITDB_DATABASE=abernathy
+    volumes:
+      - ./notes/mongodb/initdb/init_db.js:/docker-entrypoint-initdb.d/init.js
+      - ./notes/mongodb/data:/data/db
+    networks:
+      - mediscreen-network
+    ports:
+      - 27017:27017
+  patient:
+    image: mediscreen/patient
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/prod?serverTimezone=UTC&autoReconnect=true&useSSL=false&failOverReadOnly=false&maxReconnects=10
+    networks:
+      - mediscreen-network
+    depends_on:
+      - mysqldb
+    ports:
+      - 8081:8081
+  notes:
+    image: mediscreen/notes
+    networks:
+      - mediscreen-network
+    depends_on:
+      - mongodb
+    ports:
+      - 8082:8082
+#  assessment:
+#    image: mediscreen/assessment
+#    networks:
+#      - mediscreen-network
+#    ports:
+#      - 8083:8083
+  mediscreen:
+    image: mediscreen/mediscreen
+    networks:
+      - mediscreen-network
+    depends_on:
+      - patient
+      - notes
+    ports:
+    - 8080:8080
+#volumes:
+
+networks:
+  mediscreen-network:

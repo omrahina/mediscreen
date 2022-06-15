@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "notes-microservice", url = "localhost:8082")
+@FeignClient(name = "notes-microservice", url = "notes:8082")
 public interface PatientHistoryMicroserviceProxy {
 
     @PostMapping("history/add")
