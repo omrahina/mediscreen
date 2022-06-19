@@ -13,31 +13,9 @@ Mediscreen's main purpose is to detect risk factors for type 2 diabetes based on
 
 ### Run
 
-Build the project
+Please run the [build](build.sh) file in order to build all projects and associated docker images
 
-```bash
-mvn clean install
-```
-
-Build docker images for each service. Make sure you are at the same level as the Dockerfile each time.
-
-```bash
-docker build -t mediscreen/patient .
-```
-
-```bash
-docker build -t mediscreen/notes .
-```
-
-```bash
-docker build -t mediscreen/assessment .
-```
-
-```bash
-docker build -t mediscreen/mediscreen .
-```
-
-Finally, execute the docker-compose command
+Then execute the docker-compose command
 
 ```bash
 docker-compose up
