@@ -33,8 +33,6 @@ services:
       - 27017:27017
   patient:
     image: mediscreen/patient
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/prod?serverTimezone=UTC&autoReconnect=true&useSSL=false&failOverReadOnly=false&maxReconnects=10
     networks:
       - mediscreen-network
     depends_on:
@@ -49,12 +47,12 @@ services:
       - mongodb
     ports:
       - 8082:8082
-#  assessment:
-#    image: mediscreen/assessment
-#    networks:
-#      - mediscreen-network
-#    ports:
-#      - 8083:8083
+  assessment:
+    image: mediscreen/assessment
+    networks:
+      - mediscreen-network
+    ports:
+      - 8083:8083
   mediscreen:
     image: mediscreen/mediscreen
     networks:
@@ -63,8 +61,7 @@ services:
       - patient
       - notes
     ports:
-    - 8080:8080
-#volumes:
+      - 8080:8080
 
 networks:
   mediscreen-network:
