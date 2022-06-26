@@ -72,8 +72,4 @@ public class PatientService {
         }
     }
 
-    private boolean patientExists(Patient patient) {
-        Patient existingPatient = patientRepository.findPatientByFirstNameAndAndLastName(patient.getFirstName(), patient.getLastName());
-        return existingPatient != null && existingPatient.equals(patient);
-    }
 }
