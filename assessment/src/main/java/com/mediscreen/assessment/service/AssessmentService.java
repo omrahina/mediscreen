@@ -89,7 +89,7 @@ public class AssessmentService {
         return assessment;
     }
 
-    private Map<String, Long> countTriggers(List<String> notes) {
+    protected Map<String, Long> countTriggers(List<String> notes) {
         List<String> triggers = DiabetesTriggers.getTriggers();
         return notes.stream()
                 .map(note -> note.replaceAll("\\p{Punct}", "").split("\\s+"))
