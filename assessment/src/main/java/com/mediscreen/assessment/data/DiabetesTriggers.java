@@ -5,17 +5,17 @@ import java.util.List;
 public class DiabetesTriggers {
 
     public static List<String> getTriggers() {
-        return List.of("hemoglobin A1C",
+        return List.of("hémoglobine A1C",
                 "microalbumine",
-                "height",
-                "weight",
-                "smoker",
-                "abnormal",
-                "cholesterol",
-                "dizziness",
-                "relapse",
-                "reaction",
-                "antibody"
+                "taille",
+                "poids",
+                "fumeur",
+                "anormal",
+                "cholestérol",
+                "vertige",
+                "rechute",
+                "réaction",
+                "anticorps"
         );
     }
 }

@@ -33,7 +33,7 @@ public class AssessmentServiceTest {
 
     @Test
     public void should_assess_ko_missing_gender() {
-        List<NoteBean> notes = buildNoteList(new String[] {"cholesterol"});
+        List<NoteBean> notes = buildNoteList(new String[] {"cholestérol"});
         PatientBean patientBean = new PatientBean();
         patientBean.setDateOfBirth(LocalDate.of(2010, 2, 2));
 
@@ -44,7 +44,7 @@ public class AssessmentServiceTest {
 
     @Test
     public void should_assess_ok_borderline() {
-        List<NoteBean> notes = buildNoteList(new String[] {"cholesterol", "abnormal"});
+        List<NoteBean> notes = buildNoteList(new String[] {"cholestérol", "anormal"});
         PatientBean patientBean = new PatientBean();
         patientBean.setDateOfBirth(LocalDate.of(1991, 2, 2));
         patientBean.setGender(EnumGenderBean.M);
@@ -56,7 +56,7 @@ public class AssessmentServiceTest {
 
     @Test
     public void should_assess_ok_danger_M() {
-        List<NoteBean> notes = buildNoteList(new String[] {"cholesterol", "abnormal", "relapse"});
+        List<NoteBean> notes = buildNoteList(new String[] {"cholestérol", "anormal", "rechute"});
         PatientBean patientBean = new PatientBean();
         patientBean.setDateOfBirth(LocalDate.of(2000, 2, 2));
         patientBean.setGender(EnumGenderBean.M);
@@ -68,7 +68,7 @@ public class AssessmentServiceTest {
 
     @Test
     public void should_assess_ok_danger_F() {
-        List<NoteBean> notes = buildNoteList(new String[] {"cholesterol", "abnormal", "relapse", "antibody"});
+        List<NoteBean> notes = buildNoteList(new String[] {"cholestérol", "anormal", "rechute", "anticorps"});
         PatientBean patientBean = new PatientBean();
         patientBean.setDateOfBirth(LocalDate.of(2000, 2, 2));
         patientBean.setGender(EnumGenderBean.F);
@@ -80,7 +80,7 @@ public class AssessmentServiceTest {
 
     @Test
     public void should_assess_ok_early_onset_M() {
-        List<NoteBean> notes = buildNoteList(new String[] {"cholesterol", "abnormal", "relapse", "antibody", "dizziness"});
+        List<NoteBean> notes = buildNoteList(new String[] {"cholestérol", "anormal", "rechute", "anticorps", "vertige"});
         PatientBean patientBean = new PatientBean();
         patientBean.setDateOfBirth(LocalDate.of(2000, 2, 2));
         patientBean.setGender(EnumGenderBean.M);
@@ -92,8 +92,8 @@ public class AssessmentServiceTest {
 
     @Test
     public void should_assess_ok_danger() {
-        List<NoteBean> notes = buildNoteList(new String[] {"cholesterol", "abnormal", "relapse", "antibody",
-                "dizziness", "weight"});
+        List<NoteBean> notes = buildNoteList(new String[] {"cholestérol", "anormal", "rechute", "anticorps",
+                "vertige", "poids"});
         PatientBean patientBean = new PatientBean();
         patientBean.setDateOfBirth(LocalDate.of(1991, 2, 2));
         patientBean.setGender(EnumGenderBean.M);
@@ -105,8 +105,8 @@ public class AssessmentServiceTest {
 
     @Test
     public void should_assess_ok_early_onset_F() {
-        List<NoteBean> notes = buildNoteList(new String[] {"cholesterol", "abnormal", "relapse", "antibody",
-                "dizziness", "weight", "height"});
+        List<NoteBean> notes = buildNoteList(new String[] {"cholestérol", "anormal", "rechute", "anticorps",
+                "vertige", "poids", "taille"});
         PatientBean patientBean = new PatientBean();
         patientBean.setDateOfBirth(LocalDate.of(2000, 2, 2));
         patientBean.setGender(EnumGenderBean.F);
@@ -118,8 +118,8 @@ public class AssessmentServiceTest {
 
     @Test
     public void should_assess_ok_early_onset() {
-        List<NoteBean> notes = buildNoteList(new String[] {"cholesterol", "abnormal", "relapse", "antibody",
-                "dizziness", "weight", "height", "microalbumine", "reaction"});
+        List<NoteBean> notes = buildNoteList(new String[] {"cholestérol", "anormal", "rechute", "anticorps",
+                "vertige", "poids", "taille", "microalbumine", "réaction"});
         PatientBean patientBean = new PatientBean();
         patientBean.setDateOfBirth(LocalDate.of(1991, 2, 2));
         patientBean.setGender(EnumGenderBean.M);
@@ -131,10 +131,10 @@ public class AssessmentServiceTest {
 
     @Test
     public void should_countTriggers() {
-        Map<String, Long> result = assessmentService.countTriggers(List.of("cholesterol", "abnormal", "cholesterol"));
+        Map<String, Long> result = assessmentService.countTriggers(List.of("cholestérol", "anormal", "cholestérol"));
 
         assertEquals(2, result.size());
-        assertTrue(result.containsKey("abnormal"));
+        assertTrue(result.containsKey("anormal"));
     }
 
     private List<NoteBean> buildNoteList(String[] triggers) {
