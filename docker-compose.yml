@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=rootroot
+      - MYSQL_USER=root
       - MYSQL_DATABASE=prod
     networks:
       - mediscreen-network
@@ -17,6 +18,7 @@ services:
   mongodb:
     image: mongo:4.4.2
     hostname: mongodb
+    container_name: mongodb
     restart: unless-stopped
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
@@ -26,7 +28,7 @@ services:
       - MONGO_INITDB_DATABASE=abernathy
     volumes:
       - ./notes/mongodb/initdb/init_db.js:/docker-entrypoint-initdb.d/init.js
-      - ./notes/mongodb/data:/data/db
+      - ./notes/mongodb/data:/temp/data
     networks:
       - mediscreen-network
     ports:
@@ -51,6 +53,9 @@ services:
     image: mediscreen/assessment
     networks:
       - mediscreen-network
+    depends_on:
+      - patient
+      - notes
     ports:
       - 8083:8083
   mediscreen:
@@ -60,6 +65,7 @@ services:
     depends_on:
       - patient
       - notes
+      - assessment
     ports:
       - 8080:8080
 
